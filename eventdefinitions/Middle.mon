@@ -1,0 +1,13 @@
+package com.progress.demo.rce.card.middle;
+
+event NewSim{
+	integer id;
+}
+
+event Pay{
+	integer id;
+	integer card;
+	float amount;
+	string currency;
+}
+

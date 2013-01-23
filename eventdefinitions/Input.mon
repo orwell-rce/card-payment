@@ -1,0 +1,5 @@
+package com.progress.demo.rce.card.input;
+
+event NewTerminal{
+	integer id;
+}

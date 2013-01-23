@@ -1,0 +1,23 @@
+package com.progress.demo.rce.card.simulator;
+using com.progress.demo.rce.card.middle.Pay;
+using com.progress.demo.rce.card.middle.NewSim;
+
+monitor simulator{
+	NewSim sim;
+	
+	action onload() {
+		on all NewSim():sim{
+			spawn simulate(sim.id);
+		}
+	}
+	
+	action simulate(integer id) {
+		on all wait(3.0) {
+			float amount := 999.99;
+			integer idPay := id;
+			integer card := integer.rand(999999);
+			float ra := amount.rand();
+			route Pay(idPay, card, ra, "MXP");
+		}
+	}
+}

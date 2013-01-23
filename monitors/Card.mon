@@ -1,0 +1,32 @@
+package com.progress.demo.rce.card;
+using com.progress.demo.rce.card.input.NewTerminal;
+using com.progress.demo.rce.card.middle.Pay;
+using com.progress.demo.rce.streams.Stream;
+
+monitor mainCard{
+	
+	NewTerminal terminal;
+	Pay pay;
+	dictionary<integer, boolean> terminalDB;
+	
+	action onload() {
+		on all NewTerminal():terminal {
+			if not terminalDB.hasKey(terminal.id) then {
+				terminalDB.add(terminal.id, true);
+				spawn Terminal(terminal);
+			}
+		}
+	}
+	
+	action Terminal(NewTerminal terminal) {
+		log "Monitor for terminal " + terminal.id.toString();
+		
+		on all Pay(id = terminal.id):pay{
+			sequence<string> extra := new sequence<string>;
+			extra.append(pay.amount.toString());
+			extra.append(pay.currency);
+			route Stream("CARD", terminal.id, pay.card, extra);
+			emit Stream("CARD", terminal.id, pay.card, extra);
+		}
+	}
+}

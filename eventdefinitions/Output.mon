@@ -1,0 +1,8 @@
+package com.progress.demo.rce.streams;
+
+event Stream{
+	string channel;
+	integer idChannel;
+	integer idClient;
+	sequence<string> extra;
+}
